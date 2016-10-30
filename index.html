@@ -1,0 +1,126 @@
+<html>
+<head>
+
+  <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+<script>
+nextkey = () => {
+  if(score>0)
+  {
+    document.body.style.color ="green";
+  }
+  else {
+    document.body.style.color ="red";
+  }
+  var p = "qwertzuiopasdfghjklyxcvbnm";
+  curKey = p.charAt(Math.floor(Math.random()*p.length));
+  console.log(curKey);
+
+  d = document.getElementById("a");
+  d.textContent = curKey;
+  console.log(d);
+  score += 100;
+}
+
+wrongKey = () => {
+  document.body.style.color ="red";
+  score -= 1000;
+}
+
+updateScore = () => {
+  if(score<0)
+  {
+    document.body.style.color ="red";
+  }
+  score -= 1;
+  time++;
+  document.getElementById("score").textContent = "Score: " + score;
+  if(time > 60*20)
+  {
+    endGame();
+  }
+  else{
+    window.requestAnimationFrame(updateScore);
+  }
+}
+/*shake = (i) => {
+  i++;
+  if (i < 5)
+    document.getElementById("a").style.marginLeft = 45-i + "%";
+  else {
+    document.getElementById("a").style.marginLeft = 40+i + "%";
+  }
+  if(i<10)
+    window.requestAnimationFrame(shake, i);
+  else {
+    i = null;
+  }
+}*/
+startScreen = () => {
+  document.getElementById("a").textContent = "Press Space key to start";
+  curKey = " ";
+  started = false;
+  document.onkeydown=function (ev) {
+    if(!started)
+    {
+      started = true;
+      updateScore();
+    }
+    console.log(ev);
+    //shake(0);
+    if(ev.key == curKey && time < 60*20)
+    {
+      nextkey();
+    }
+    else {
+      wrongKey();
+    }
+}
+}
+
+endGame = () => {
+  document.body.style.color ="red";
+  d = document.getElementById("a");
+  d.textContent = "Final Score: " + score;
+  document.getElementById("score").textContent = "Press Space to try again";
+  curKey = " ";
+  document.onkeydown=function (ev) {
+    if(ev.key == curKey)
+    {
+      window.location.reload();
+    }
+  }
+}
+</script>
+  <style>
+    body {
+      background-color: black;
+      color:green;
+    }
+    #a {
+      font-size: 80px;
+      margin-left: 45%;
+      margin-top: 10%;
+      font-family: 'Indie Flower', cursive;
+    }
+    #score {
+      font-size: 30px;
+      margin-left: 30%;
+      font-family: 'Indie Flower', cursive;
+    }
+  </style>
+</head>
+
+<body>
+<h1>0h GameJam 2016, made by Granor</h1>
+<div id="a"></div>
+<div id="score"></div>
+
+</body>
+</html>
+<script>
+  score = -100;
+  time = 0;
+  var curKey = " ";
+  startScreen();
+
+</script>
